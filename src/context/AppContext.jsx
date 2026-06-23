@@ -12,6 +12,18 @@ export const AppProvider = ({ children }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [activeCategory, setActiveCategory] = useState('All');
   const [groceryList, setGroceryList] = useState([]);
+  const [theme, setTheme] = useState('dark');
+
+  // Theme effect
+  useEffect(() => {
+    if (theme === 'light') {
+      document.body.classList.add('light-theme');
+    } else {
+      document.body.classList.remove('light-theme');
+    }
+  }, [theme]);
+
+  const toggleTheme = () => setTheme(prev => prev === 'dark' ? 'light' : 'dark');
 
   // Firebase Real-time Sync
   useEffect(() => {
@@ -119,7 +131,8 @@ export const AppProvider = ({ children }) => {
       isAdmin, setIsAdmin,
       searchQuery, setSearchQuery,
       activeCategory, setActiveCategory,
-      groceryList, addToGrocery, toggleGroceryItem, clearGroceryList
+      groceryList, addToGrocery, toggleGroceryItem, clearGroceryList,
+      theme, toggleTheme
     }}>
       {children}
     </AppContext.Provider>

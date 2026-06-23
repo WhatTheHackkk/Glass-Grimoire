@@ -15,6 +15,20 @@
   --font-body: 'Outfit', system-ui, sans-serif;
 }
 
+body.light-theme {
+  --bg-dark: #f0f4f8;
+  --bg-panel: rgba(255, 255, 255, 0.4);
+  --glass-border: rgba(0, 0, 0, 0.1);
+  --glow-cyan: #0088cc;
+  --glow-purple: #ffb703;
+
+  --text-primary: #1a1a2e;
+  --text-secondary: rgba(26, 26, 46, 0.7);
+  --text-muted: rgba(26, 26, 46, 0.4);
+  
+  background-image: url('https://images.unsplash.com/photo-1579546929518-9e396f3cc809?q=80&w=2070&auto=format&fit=crop');
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -46,6 +60,14 @@ body {
   box-shadow: 0 16px 40px rgba(0, 0, 0, 0.4), inset 0 0 0 1px rgba(255, 255, 255, 0.05);
 }
 
+body.light-theme .glass-panel {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.6) 0%, rgba(255, 255, 255, 0.2) 100%);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  border-top: 1px solid rgba(255, 255, 255, 0.6);
+  border-left: 1px solid rgba(255, 255, 255, 0.4);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.1), inset 0 0 0 1px rgba(255, 255, 255, 0.5);
+}
+
 /* Header & Typography */
 .main-header {
   padding: 2rem 4rem 0;
@@ -71,6 +93,13 @@ body {
   user-select: none;
   -webkit-user-select: none;
   filter: drop-shadow(0 0 10px rgba(255,255,255,0.2));
+}
+
+body.light-theme .grimoire-title {
+  background: linear-gradient(135deg, #ffb703 0%, #fb8500 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 0 10px rgba(255, 183, 3, 0.3));
 }
 
 /* Header Separator Glow */
@@ -133,6 +162,15 @@ body {
   background: rgba(0, 0, 0, 0.5);
 }
 
+body.light-theme .glass-input {
+  background: rgba(255, 255, 255, 0.4);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+body.light-theme .glass-input:focus {
+  background: rgba(255, 255, 255, 0.7);
+  border-color: rgba(0, 0, 0, 0.2);
+}
+
 .glass-btn {
   background: rgba(255, 255, 255, 0.05);
   border: 1px solid var(--glass-border);
@@ -146,6 +184,14 @@ body {
 }
 .glass-btn:hover {
   background: rgba(255, 255, 255, 0.15);
+}
+
+body.light-theme .glass-btn {
+  background: rgba(255, 255, 255, 0.5);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+body.light-theme .glass-btn:hover {
+  background: rgba(255, 255, 255, 0.8);
 }
 
 /* Form Styles */

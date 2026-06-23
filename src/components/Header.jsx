@@ -1,10 +1,10 @@
 import React, { useContext, useRef, useState } from 'react';
-import { Search, ShoppingCart } from 'lucide-react';
+import { Search, ShoppingCart, Sun, Moon } from 'lucide-react';
 import { AppContext } from '../context/AppContext';
 import { CATEGORIES } from '../constants/categories';
 
 export const Header = ({ onLoginRequest, onOpenGrocery }) => {
-  const { searchQuery, setSearchQuery, isAdmin, activeCategory, setActiveCategory, groceryList } = useContext(AppContext);
+  const { searchQuery, setSearchQuery, isAdmin, activeCategory, setActiveCategory, groceryList, theme, toggleTheme } = useContext(AppContext);
   const [tapCount, setTapCount] = useState(0);
   const tapTimeoutRef = useRef(null);
 
@@ -66,6 +66,15 @@ export const Header = ({ onLoginRequest, onOpenGrocery }) => {
                 {groceryList.length}
               </span>
             )}
+          </button>
+          
+          <button 
+            className="glass-btn" 
+            onClick={toggleTheme}
+            style={{ position: 'relative', padding: '0.6rem', borderRadius: '50%' }}
+            title={theme === 'dark' ? "Switch to Light Magic" : "Switch to Dark Magic"}
+          >
+            {theme === 'dark' ? <Sun size={22} color="var(--glow-purple)" /> : <Moon size={22} color="var(--glow-cyan)" />}
           </button>
         </div>
       </div>
