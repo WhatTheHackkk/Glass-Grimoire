@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext, useRef } from 'react';
 import { X, Plus, Image as ImageIcon } from 'lucide-react';
 import { AppContext } from '../context/AppContext';
 import { CATEGORIES } from '../constants/categories';
