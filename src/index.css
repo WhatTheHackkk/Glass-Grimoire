@@ -182,32 +182,49 @@ body {
   }
 
   .grimoire-title {
-    font-size: 2.5rem;
+    font-size: clamp(1.8rem, 8vw, 2.5rem);
   }
 
   .search-wrapper {
     width: 100% !important;
   }
+  
+  .search-wrapper > div:first-child {
+    flex: 1;
+  }
 
   .vault-grid {
-    grid-template-columns: 1fr;
-    padding: 0 1.5rem 2rem;
-    gap: 1.5rem;
+    grid-template-columns: repeat(2, 1fr);
+    padding: 0 1rem 2rem;
+    gap: 1rem;
   }
   
-  .glass-panel {
-    right: -100% !important;
-    width: 100% !important;
-    top: 0 !important;
-    bottom: 0 !important;
-    margin: 0 !important;
-    border-radius: 0;
+  .vault-grid article {
+    height: 320px !important;
+  }
+
+  .vault-grid article > div:first-child {
+    height: 120px !important;
+  }
+
+  .vault-grid article > div:last-child {
+    padding: 0.8rem !important;
+  }
+
+  .vault-grid article h3 {
+    font-size: 1.1rem !important;
   }
   
-  .glass-panel[style*="right: 0px"],
-  .glass-panel[style*="right: 0;"] {
-    right: 0 !important;
+  .vault-grid article p {
+    font-size: 0.8rem !important;
   }
+  
+  .vault-grid article > div:last-child > div:last-child {
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  
+
 }
 
 /* Print Media Queries */
