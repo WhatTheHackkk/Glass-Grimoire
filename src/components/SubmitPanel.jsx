@@ -98,7 +98,7 @@ export const SubmitPanel = ({ isOpen, onClose, editingRecipe }) => {
         className="glass-panel"
         style={{
           position: 'fixed',
-          right: isOpen ? '0' : '-100%',
+          right: '0',
           top: '5vh',
           bottom: '5vh',
           width: '100%',
@@ -106,7 +106,8 @@ export const SubmitPanel = ({ isOpen, onClose, editingRecipe }) => {
           maxHeight: '90vh',
           marginRight: '0',
           padding: '2rem',
-          transition: 'right 0.5s cubic-bezier(0.25, 0.8, 0.25, 1)',
+          transform: isOpen ? 'translateX(0)' : 'translateX(100%)',
+          transition: 'transform 0.5s cubic-bezier(0.25, 0.8, 0.25, 1)',
           zIndex: 1000,
           display: 'flex',
           flexDirection: 'column',
