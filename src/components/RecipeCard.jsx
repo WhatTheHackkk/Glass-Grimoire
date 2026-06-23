@@ -5,6 +5,7 @@ import { AppContext } from '../context/AppContext';
 export const RecipeCard = ({ recipe, onEdit, onView }) => {
   const { incrementHeart, toggleFavorite, deleteRecipe, isAdmin } = useContext(AppContext);
   const [isPulsing, setIsPulsing] = useState(false);
+  const [confirmAction, setConfirmAction] = useState(null); // 'edit' or 'delete'
 
   const handleHeartClick = () => {
     incrementHeart(recipe.id);
@@ -62,16 +63,49 @@ export const RecipeCard = ({ recipe, onEdit, onView }) => {
               <button className="glass-btn" style={{ padding: '0.4rem', border: recipe.isFavorite ? '1px solid var(--glow-cyan)' : '' }} onClick={() => toggleFavorite(recipe.id)}>
                 <Star size={16} fill={recipe.isFavorite ? 'var(--glow-cyan)' : 'none'} color={recipe.isFavorite ? 'var(--glow-cyan)' : 'var(--text-secondary)'} />
               </button>
-              <button className="glass-btn" style={{ padding: '0.4rem' }} onClick={() => onEdit(recipe)}>
+              <button className="glass-btn" style={{ padding: '0.4rem' }} onClick={() => setConfirmAction('edit')}>
                 <Edit size={16} />
               </button>
-              <button className="glass-btn" style={{ padding: '0.4rem' }} onClick={() => deleteRecipe(recipe.id)}>
+              <button className="glass-btn" style={{ padding: '0.4rem' }} onClick={() => setConfirmAction('delete')}>
                 <Trash2 size={16} />
               </button>
             </div>
           )}
         </div>
       </div>
+
+      {confirmAction && (
+        <div style={{
+          position: 'absolute', inset: 0, zIndex: 10,
+          background: 'rgba(0,0,0,0.6)', backdropFilter: 'blur(10px)',
+          display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
+          padding: '2rem', textAlign: 'center',
+          boxShadow: 'inset 0 0 20px rgba(178, 0, 255, 0.2)'
+        }}>
+          <h4 style={{ fontFamily: 'var(--font-heading)', color: 'var(--glow-cyan)', fontSize: '1.2rem', marginBottom: '0.5rem' }}>
+            {confirmAction === 'edit' ? 'Edit Recipe?' : 'Delete Recipe?'}
+          </h4>
+          <p style={{ color: 'var(--text-secondary)', fontSize: '0.85rem', marginBottom: '1.5rem' }}>
+            {confirmAction === 'edit' ? 'Open this recipe in the editor?' : 'This action cannot be undone.'}
+          </p>
+          <div style={{ display: 'flex', gap: '1rem', width: '100%' }}>
+            <button className="glass-btn" style={{ flex: 1, padding: '0.5rem' }} onClick={() => setConfirmAction(null)}>
+              Cancel
+            </button>
+            <button 
+              className="glass-btn" 
+              style={{ flex: 1, padding: '0.5rem', border: confirmAction === 'delete' ? '1px solid #FF4D6D' : '1px solid var(--glow-cyan)' }} 
+              onClick={() => {
+                if (confirmAction === 'edit') onEdit(recipe);
+                else if (confirmAction === 'delete') deleteRecipe(recipe.id);
+                setConfirmAction(null);
+              }}
+            >
+              {confirmAction === 'edit' ? 'Edit' : 'Delete'}
+            </button>
+          </div>
+        </div>
+      )}
     </article>
   );
 };

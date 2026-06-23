@@ -160,7 +160,12 @@ export const SubmitPanel = ({ isOpen, onClose, editingRecipe }) => {
         </div>
 
         {showPrompt ? (
-          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', flex: 1, textAlign: 'center', gap: '1.5rem', background: 'rgba(0,0,0,0.4)', borderRadius: '15px', padding: '2rem', border: '1px solid var(--glow-purple)' }}>
+          <div style={{ 
+            display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', flex: 1, 
+            textAlign: 'center', gap: '1.5rem', background: 'rgba(0,0,0,0.6)', borderRadius: '15px', padding: '2rem', 
+            border: '1px solid var(--glow-purple)', backdropFilter: 'blur(10px)',
+            boxShadow: '0 4px 30px rgba(0, 0, 0, 0.5), inset 0 0 20px rgba(178, 0, 255, 0.2)'
+          }}>
             <h3 style={{ fontFamily: 'var(--font-heading)', color: 'var(--glow-cyan)' }}>Unsaved Draft Detected</h3>
             <p style={{ color: 'var(--text-secondary)' }}>You are still in the middle of editing a recipe. Would you like to continue working on it, or start fresh?</p>
             <div style={{ display: 'flex', gap: '1rem', width: '100%', flexDirection: 'column' }}>
