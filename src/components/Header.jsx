@@ -33,7 +33,6 @@ export const Header = ({ onLoginRequest, onOpenGrocery }) => {
       <div className="header-top">
         
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.8rem', cursor: isAdmin ? 'default' : 'pointer' }} onClick={handleTitleClick}>
-          <img src="/logo.png" alt="Glass Grimoire Logo" style={{ height: '40px', width: '40px', objectFit: 'contain' }} />
           <h1 className="grimoire-title" style={{ margin: 0 }}>
             GLASS GRIMOIRE
           </h1>
