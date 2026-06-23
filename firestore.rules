@@ -1,0 +1,11 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /{document=**} {
+      // NOTE: Because the app uses a mocked "10-tap" admin login instead of real Firebase Auth,
+      // we have to allow public writes to make the app function. 
+      // To secure this fully in the future, you must integrate Firebase Authentication.
+      allow read, write: if true;
+    }
+  }
+}

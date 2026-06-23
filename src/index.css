@@ -1,0 +1,237 @@
+@import url('https://fonts.cdnfonts.com/css/aquire');
+
+:root {
+  --bg-dark: #070913;
+  --bg-panel: rgba(20, 25, 35, 0.4);
+  --glass-border: rgba(255, 255, 255, 0.1);
+  --glow-cyan: #00F0FF;
+  --glow-purple: #B200FF;
+
+  --text-primary: #FFFFFF;
+  --text-secondary: rgba(255, 255, 255, 0.7);
+  --text-muted: rgba(255, 255, 255, 0.4);
+
+  --font-heading: 'Aquire', system-ui, sans-serif;
+  --font-body: 'Outfit', system-ui, sans-serif;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--font-body);
+  color: var(--text-primary);
+  background-color: var(--bg-dark);
+  background-image: url('/background.png');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* Glass Panels */
+.glass-panel {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.01) 100%);
+  backdrop-filter: blur(40px) saturate(150%);
+  -webkit-backdrop-filter: blur(40px) saturate(150%);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  border-left: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 20px;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.4), inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+}
+
+/* Header & Typography */
+.main-header {
+  padding: 2rem 4rem 0;
+}
+
+.header-top {
+  display: flex; 
+  justify-content: space-between; 
+  align-items: center; 
+  margin-bottom: 1.5rem;
+}
+
+.grimoire-title {
+  font-family: var(--font-heading);
+  font-size: 3.5rem;
+  font-weight: 800;
+  letter-spacing: -1px;
+  text-transform: uppercase;
+  margin: 0;
+  background: linear-gradient(135deg, #fff 0%, #a5b4fc 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  user-select: none;
+  -webkit-user-select: none;
+  filter: drop-shadow(0 0 10px rgba(255,255,255,0.2));
+}
+
+/* Header Separator Glow */
+.header-separator {
+  height: 1px;
+  width: 100%;
+  background: linear-gradient(90deg, transparent, var(--glass-border) 20%, var(--glass-border) 80%, transparent);
+  position: relative;
+  margin-bottom: 3rem;
+}
+.header-separator::after {
+  content: '';
+  position: absolute;
+  left: 10%;
+  top: 0;
+  width: 15%;
+  height: 2px;
+  background: var(--glow-cyan);
+  box-shadow: 0 0 10px var(--glow-cyan);
+  border-radius: 2px;
+}
+
+/* Grid Layouts */
+.vault-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 2.5rem;
+  padding: 0 4rem 4rem;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.4);
+}
+
+/* UI Utilities */
+.glass-input {
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid var(--glass-border);
+  color: var(--text-primary);
+  padding: 0.8rem 1.2rem;
+  border-radius: 8px;
+  font-family: var(--font-body);
+  transition: all 0.3s ease;
+  width: 100%;
+}
+.glass-input:focus {
+  outline: none;
+  border-color: rgba(255, 255, 255, 0.3);
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.glass-btn {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--glass-border);
+  color: var(--text-primary);
+  padding: 0.6rem 1.2rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-family: var(--font-body);
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+.glass-btn:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+/* Form Styles */
+.form-group {
+  margin-bottom: 1.5rem;
+}
+.form-group label {
+  display: block;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  margin-bottom: 0.5rem;
+}
+
+/* Category Ribbon */
+.category-ribbon::-webkit-scrollbar {
+  display: none;
+}
+.active-pill {
+  background: rgba(0, 240, 255, 0.2) !important;
+  border-color: var(--glow-cyan) !important;
+  box-shadow: 0 0 15px rgba(0, 240, 255, 0.3) !important;
+}
+
+/* Responsive Media Queries */
+@media (max-width: 768px) {
+  .main-header {
+    padding: 1.5rem 1.5rem 0;
+  }
+  
+  .header-top {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.5rem;
+  }
+
+  .grimoire-title {
+    font-size: 2.5rem;
+  }
+
+  .search-wrapper {
+    width: 100% !important;
+  }
+
+  .vault-grid {
+    grid-template-columns: 1fr;
+    padding: 0 1.5rem 2rem;
+    gap: 1.5rem;
+  }
+  
+  .glass-panel {
+    right: -100% !important;
+    width: 100% !important;
+    top: 0 !important;
+    bottom: 0 !important;
+    margin: 0 !important;
+    border-radius: 0;
+  }
+  
+  .glass-panel[style*="right: 0px"],
+  .glass-panel[style*="right: 0;"] {
+    right: 0 !important;
+  }
+}
+
+/* Print Media Queries */
+@media print {
+  body {
+    background: white !important;
+    color: black !important;
+  }
+  .app-background, .main-header, .no-print, .glass-btn {
+    display: none !important;
+  }
+  .print-container {
+    box-shadow: none !important;
+    border: none !important;
+    background: none !important;
+    backdrop-filter: none !important;
+    position: static !important;
+    width: 100% !important;
+    max-height: none !important;
+    overflow: visible !important;
+    color: black !important;
+  }
+  .print-container * {
+    color: black !important;
+    text-shadow: none !important;
+  }
+}
