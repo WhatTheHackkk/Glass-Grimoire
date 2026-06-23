@@ -32,13 +32,12 @@ export const Header = ({ onLoginRequest, onOpenGrocery }) => {
     <header className="main-header">
       <div className="header-top">
         
-        <h1 
-          className="grimoire-title"
-          onClick={handleTitleClick}
-          style={{ cursor: isAdmin ? 'default' : 'pointer' }}
-        >
-          GLASSGRIMOIRE
-        </h1>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.8rem', cursor: isAdmin ? 'default' : 'pointer' }} onClick={handleTitleClick}>
+          <img src="/logo.png" alt="Glass Grimoire Logo" style={{ height: '40px', width: '40px', objectFit: 'contain' }} />
+          <h1 className="grimoire-title" style={{ margin: 0 }}>
+            GLASS GRIMOIRE
+          </h1>
+        </div>
 
         <div className="search-wrapper" style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
           <div style={{ position: 'relative' }}>
