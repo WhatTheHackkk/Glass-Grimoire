@@ -78,28 +78,45 @@ export const SubmitPanel = ({ isOpen, onClose, editingRecipe }) => {
   };
 
   return (
-    <div 
-      className="glass-panel"
-      style={{
-        position: 'fixed',
-        right: isOpen ? '0' : '-500px',
-        top: '10vh',
-        bottom: '10vh',
-        width: '100%',
-        maxWidth: '450px',
-        marginRight: '0',
-        padding: '2rem',
-        transition: 'right 0.5s cubic-bezier(0.25, 0.8, 0.25, 1)',
-        zIndex: 100,
-        display: 'flex',
-        flexDirection: 'column',
-        overflowY: 'auto'
-      }}
-    >
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
-        <h2 style={{ fontFamily: 'var(--font-heading)' }}>{editingRecipe ? 'Edit Recipe' : 'Submit New Recipe'}</h2>
-        <button className="glass-btn" onClick={onClose} style={{ padding: '0.4rem', border: 'none' }}><X size={20} /></button>
-      </div>
+    <>
+      {/* Overlay mask */}
+      <div 
+        style={{
+          position: 'fixed',
+          inset: 0,
+          backgroundColor: 'rgba(0, 0, 0, 0.5)',
+          zIndex: 999,
+          backdropFilter: 'blur(4px)',
+          opacity: isOpen ? 1 : 0,
+          pointerEvents: isOpen ? 'auto' : 'none',
+          transition: 'opacity 0.3s ease'
+        }}
+        onClick={onClose}
+      />
+
+      <div 
+        className="glass-panel"
+        style={{
+          position: 'fixed',
+          right: isOpen ? '0' : '-100%',
+          top: '5vh',
+          bottom: '5vh',
+          width: '100%',
+          maxWidth: '450px',
+          maxHeight: '90vh',
+          marginRight: '0',
+          padding: '2rem',
+          transition: 'right 0.5s cubic-bezier(0.25, 0.8, 0.25, 1)',
+          zIndex: 1000,
+          display: 'flex',
+          flexDirection: 'column',
+          overflowY: 'auto'
+        }}
+      >
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
+          <h2 style={{ fontFamily: 'var(--font-heading)' }}>{editingRecipe ? 'Edit Recipe' : 'Submit New Recipe'}</h2>
+          <button type="button" className="glass-btn" onClick={onClose} style={{ padding: '0.4rem', border: 'none' }}><X size={20} /></button>
+        </div>
 
       <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem', flex: 1 }}>
         <div className="form-group">
@@ -175,6 +192,7 @@ export const SubmitPanel = ({ isOpen, onClose, editingRecipe }) => {
           {editingRecipe ? 'Save Changes' : 'Submit Recipe'}
         </button>
       </form>
-    </div>
+      </div>
+    </>
   );
 };

@@ -34,7 +34,7 @@ export const AIChefPanel = ({ isOpen, onClose, onRecipeGenerated }) => {
       padding: '2rem'
     }}>
       <div className="glass-panel" style={{ width: '100%', maxWidth: '500px', position: 'relative', padding: '2rem' }}>
-        <button className="glass-btn" onClick={onClose} style={{ position: 'absolute', top: '1rem', right: '1rem', padding: '0.5rem' }}>
+        <button type="button" className="glass-btn" onClick={onClose} style={{ position: 'absolute', top: '1rem', right: '1rem', padding: '0.5rem' }}>
           <X size={20} />
         </button>
 

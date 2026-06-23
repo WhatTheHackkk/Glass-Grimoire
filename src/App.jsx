@@ -39,12 +39,24 @@ const AppContent = () => {
         <RecipeGrid onEditRecipe={handleEditRecipe} onViewRecipe={(recipe) => setViewedRecipe(recipe)} />
       </main>
 
-      <SubmitPanel 
-        isOpen={isPanelOpen} 
-        onClose={() => setIsPanelOpen(false)} 
-        editingRecipe={editingRecipe} 
-      />
-      
+      {isAdmin && (
+        <>
+          <SubmitPanel 
+            isOpen={isPanelOpen} 
+            onClose={() => setIsPanelOpen(false)} 
+            editingRecipe={editingRecipe} 
+          />
+          <AIChefPanel 
+            isOpen={isAIChefOpen}
+            onClose={() => setIsAIChefOpen(false)}
+            onRecipeGenerated={(recipe) => {
+              setEditingRecipe(recipe);
+              setIsPanelOpen(true);
+            }}
+          />
+        </>
+      )}
+
       <LoginModal 
         isOpen={isLoginOpen} 
         onClose={() => setIsLoginOpen(false)} 
@@ -61,15 +73,6 @@ const AppContent = () => {
       <GroceryPanel 
         isOpen={isGroceryOpen}
         onClose={() => setIsGroceryOpen(false)}
-      />
-
-      <AIChefPanel 
-        isOpen={isAIChefOpen}
-        onClose={() => setIsAIChefOpen(false)}
-        onRecipeGenerated={(recipe) => {
-          setEditingRecipe(recipe);
-          setIsPanelOpen(true);
-        }}
       />
 
       {isAdmin && (
