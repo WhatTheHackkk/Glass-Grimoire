@@ -13,18 +13,42 @@ export const SubmitPanel = ({ isOpen, onClose, editingRecipe }) => {
   const [ingredients, setIngredients] = useState([{ name: '', qty: '' }]);
   const [coverImage, setCoverImage] = useState(null);
 
+  const [showPrompt, setShowPrompt] = useState(false);
+  const [pendingRecipe, setPendingRecipe] = useState(null);
+  const [localEditingRecipe, setLocalEditingRecipe] = useState(null);
+
+  const prevIsOpen = useRef(isOpen);
+  const prevEditingRecipe = useRef(editingRecipe);
+
+  const loadRecipe = (recipe) => {
+    setTitle(recipe.title);
+    setDesc(recipe.description);
+    setSelectedTags(recipe.tags || []);
+    setInstructions(recipe.instructions);
+    setIngredients(recipe.ingredients.length > 0 ? recipe.ingredients : [{ name: '', qty: '' }]);
+    setCoverImage(recipe.coverImage);
+  };
+
   useEffect(() => {
-    if (editingRecipe) {
-      setTitle(editingRecipe.title);
-      setDesc(editingRecipe.description);
-      setSelectedTags(editingRecipe.tags || []);
-      setInstructions(editingRecipe.instructions);
-      setIngredients(editingRecipe.ingredients.length > 0 ? editingRecipe.ingredients : [{ name: '', qty: '' }]);
-      setCoverImage(editingRecipe.coverImage);
-    } else {
-      resetForm();
+    if (isOpen) {
+      const isContextChanging = !prevIsOpen.current || prevEditingRecipe.current !== editingRecipe;
+      if (isContextChanging) {
+        const isDirty = title.trim() !== '' || desc.trim() !== '' || instructions.trim() !== '';
+        
+        // If the form has data, AND they aren't just reopening the exact same draft they were already editing
+        if (isDirty && localEditingRecipe !== editingRecipe) {
+          setShowPrompt(true);
+          setPendingRecipe(editingRecipe);
+        } else {
+          setLocalEditingRecipe(editingRecipe);
+          if (editingRecipe) loadRecipe(editingRecipe);
+        }
+      }
     }
-  }, [editingRecipe]);
+    
+    prevIsOpen.current = isOpen;
+    prevEditingRecipe.current = editingRecipe;
+  }, [isOpen, editingRecipe]);
 
   useEffect(() => {
     const handlePaste = (e) => {
@@ -84,8 +108,8 @@ export const SubmitPanel = ({ isOpen, onClose, editingRecipe }) => {
       coverImage: coverImage || 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=800&q=80'
     };
 
-    if (editingRecipe) {
-      updateRecipe({ ...editingRecipe, ...data });
+    if (localEditingRecipe) {
+      updateRecipe({ ...localEditingRecipe, ...data });
     } else {
       addRecipe(data);
       resetForm();
@@ -131,10 +155,37 @@ export const SubmitPanel = ({ isOpen, onClose, editingRecipe }) => {
         }}
       >
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
-          <h2 style={{ fontFamily: 'var(--font-heading)' }}>{editingRecipe ? 'Edit Recipe' : 'Submit New Recipe'}</h2>
+          <h2 style={{ fontFamily: 'var(--font-heading)' }}>{localEditingRecipe ? 'Edit Recipe' : 'Submit New Recipe'}</h2>
           <button type="button" className="glass-btn" onClick={onClose} style={{ padding: '0.4rem', border: 'none' }}><X size={20} /></button>
         </div>
 
+        {showPrompt ? (
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', flex: 1, textAlign: 'center', gap: '1.5rem', background: 'rgba(0,0,0,0.4)', borderRadius: '15px', padding: '2rem', border: '1px solid var(--glow-purple)' }}>
+            <h3 style={{ fontFamily: 'var(--font-heading)', color: 'var(--glow-cyan)' }}>Unsaved Draft Detected</h3>
+            <p style={{ color: 'var(--text-secondary)' }}>You are still in the middle of editing a recipe. Would you like to continue working on it, or start fresh?</p>
+            <div style={{ display: 'flex', gap: '1rem', width: '100%', flexDirection: 'column' }}>
+              <button 
+                className="glass-btn" 
+                style={{ border: '1px solid var(--glow-cyan)' }}
+                onClick={() => setShowPrompt(false)}
+              >
+                Continue Working
+              </button>
+              <button 
+                className="glass-btn"
+                style={{ border: '1px solid var(--glow-purple)' }}
+                onClick={() => {
+                  setShowPrompt(false);
+                  setLocalEditingRecipe(pendingRecipe);
+                  if (pendingRecipe) loadRecipe(pendingRecipe);
+                  else resetForm();
+                }}
+              >
+                Start Fresh
+              </button>
+            </div>
+          </div>
+        ) : (
       <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem', flex: 1 }}>
         <div className="form-group">
           <label>Recipe Name</label>
@@ -211,9 +262,10 @@ export const SubmitPanel = ({ isOpen, onClose, editingRecipe }) => {
         </div>
 
         <button type="submit" className="glass-btn" style={{ border: '1px solid var(--glow-cyan)', marginTop: 'auto' }}>
-          {editingRecipe ? 'Save Changes' : 'Submit Recipe'}
+          {localEditingRecipe ? 'Save Changes' : 'Submit Recipe'}
         </button>
       </form>
+      )}
       </div>
     </>
   );
