@@ -26,6 +26,18 @@ export const SubmitPanel = ({ isOpen, onClose, editingRecipe }) => {
     }
   }, [editingRecipe, isOpen]);
 
+  useEffect(() => {
+    const handlePaste = (e) => {
+      if (!isOpen || !e.clipboardData || !e.clipboardData.files.length) return;
+      const file = Array.from(e.clipboardData.files).find(f => f.type.startsWith('image/'));
+      if (file) {
+        processImageFile(file);
+      }
+    };
+    window.addEventListener('paste', handlePaste);
+    return () => window.removeEventListener('paste', handlePaste);
+  }, [isOpen]);
+
   const resetForm = () => {
     setTitle('');
     setDesc('');
@@ -35,8 +47,7 @@ export const SubmitPanel = ({ isOpen, onClose, editingRecipe }) => {
     setCoverImage(null);
   };
 
-  const handleImageUpload = (e) => {
-    const file = e.target.files[0];
+  const processImageFile = (file) => {
     if (!file) return;
 
     const reader = new FileReader();
@@ -56,6 +67,10 @@ export const SubmitPanel = ({ isOpen, onClose, editingRecipe }) => {
       img.src = ev.target.result;
     };
     reader.readAsDataURL(file);
+  };
+
+  const handleImageUpload = (e) => {
+    processImageFile(e.target.files[0]);
   };
 
   const handleSubmit = (e) => {
@@ -163,7 +178,12 @@ export const SubmitPanel = ({ isOpen, onClose, editingRecipe }) => {
             }}
           >
             <input type="file" style={{ display: 'none' }} accept="image/*" onChange={handleImageUpload} />
-            {!coverImage && <ImageIcon size={32} color="var(--text-muted)" />}
+            {!coverImage ? (
+              <div style={{ textAlign: 'center', color: 'var(--text-muted)' }}>
+                <ImageIcon size={32} style={{ marginBottom: '0.5rem' }} />
+                <div style={{ fontSize: '0.8rem' }}>Click or Paste Image Here</div>
+              </div>
+            ) : null}
           </label>
         </div>
 
