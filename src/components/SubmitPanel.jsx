@@ -24,7 +24,7 @@ export const SubmitPanel = ({ isOpen, onClose, editingRecipe }) => {
     } else {
       resetForm();
     }
-  }, [editingRecipe, isOpen]);
+  }, [editingRecipe]);
 
   useEffect(() => {
     const handlePaste = (e) => {
@@ -88,6 +88,7 @@ export const SubmitPanel = ({ isOpen, onClose, editingRecipe }) => {
       updateRecipe({ ...editingRecipe, ...data });
     } else {
       addRecipe(data);
+      resetForm();
     }
     onClose();
   };
