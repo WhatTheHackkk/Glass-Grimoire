@@ -35,7 +35,7 @@ const AppContent = () => {
         onOpenGrocery={() => setIsGroceryOpen(true)}
       />
       
-      <main>
+      <main className="no-print">
         <RecipeGrid onEditRecipe={handleEditRecipe} onViewRecipe={(recipe) => setViewedRecipe(recipe)} />
       </main>
 
@@ -76,7 +76,7 @@ const AppContent = () => {
       />
 
       {isAdmin && (
-        <div style={{ position: 'fixed', bottom: '2rem', right: '2rem', display: 'flex', flexDirection: 'column', gap: '1rem', zIndex: 90 }}>
+        <div className="no-print" style={{ position: 'fixed', bottom: '2rem', right: '2rem', display: 'flex', flexDirection: 'column', gap: '1rem', zIndex: 90 }}>
           <button 
             className="glass-btn"
             onClick={() => setIsAIChefOpen(true)}
