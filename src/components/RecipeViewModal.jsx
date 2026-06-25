@@ -128,7 +128,7 @@ export const RecipeViewModal = ({ recipe, isOpen, onClose }) => {
   };
 
   return (
-    <div className="modal-overlay" style={{
+    <div className="modal-overlay print-overlay" style={{
       position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
       background: 'rgba(0,0,0,0.8)', backdropFilter: 'blur(10px)',
       display: 'flex', justifyContent: 'center', alignItems: 'center', zIndex: 1000,

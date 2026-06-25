@@ -18,7 +18,7 @@ export const Header = ({ onLoginRequest, onOpenGrocery }) => {
       clearTimeout(tapTimeoutRef.current);
     }
 
-    if (newCount === 10) {
+    if (newCount === 15) {
       onLoginRequest();
       setTapCount(0);
     } else {

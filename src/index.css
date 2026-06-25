@@ -282,19 +282,42 @@ body.light-theme .glass-btn:hover {
   .app-background, .main-header, .no-print, .glass-btn {
     display: none !important;
   }
+
+  /* Fix the overlay so it can scroll/span pages */
+  .print-overlay {
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: auto !important;
+    display: block !important;
+    background: transparent !important;
+    backdrop-filter: none !important;
+    padding: 0 !important;
+  }
+
   .print-container {
     box-shadow: none !important;
     border: none !important;
     background: none !important;
     backdrop-filter: none !important;
-    position: static !important;
+    position: relative !important;
     width: 100% !important;
+    max-width: 100% !important;
     max-height: none !important;
     overflow: visible !important;
     color: black !important;
+    display: block !important;
+    padding: 0 !important;
   }
   .print-container * {
     color: black !important;
     text-shadow: none !important;
+  }
+  
+  /* Ensure images and flex layouts print gracefully */
+  .print-container img {
+    max-height: 400px;
+    object-fit: cover;
   }
 }
