@@ -123,16 +123,26 @@ export const SubmitPanel = ({ isOpen, onClose, editingRecipe }) => {
         return { name: String(item[0]), qty: String(item[1]) };
       });
 
-      // Filter out empty rows from current state, then append the new ones
-      const currentValid = ingredients.filter(i => i.name.trim() !== '' || i.qty.trim() !== '');
-      setIngredients(currentValid.length > 0 ? [...currentValid, ...newIngredients] : newIngredients);
+      setIngredients(newIngredients.length > 0 ? newIngredients : [{ name: '', qty: '' }]);
       
       setShowJSInput(false);
-      setJsInputValue('');
       setJsInputError('');
     } catch (err) {
       setJsInputError('Failed to parse: ' + err.message);
     }
+  };
+
+  const handleToggleJS = () => {
+    if (!showJSInput) {
+      const validIngs = ingredients.filter(i => i.name.trim() !== '' || i.qty.trim() !== '');
+      if (validIngs.length > 0) {
+        const formatted = '[\n' + validIngs.map(i => `  [${JSON.stringify(i.name)}, ${JSON.stringify(i.qty)}]`).join(',\n') + '\n]';
+        setJsInputValue(formatted);
+      } else if (!jsInputValue) {
+        setJsInputValue('[\n  ["", ""]\n]');
+      }
+    }
+    setShowJSInput(!showJSInput);
   };
 
   const handleSubmit = (e) => {
@@ -289,7 +299,7 @@ export const SubmitPanel = ({ isOpen, onClose, editingRecipe }) => {
               type="button" 
               className="glass-btn" 
               style={{ fontSize: '0.8rem', padding: '0.2rem 0.6rem', borderRadius: '15px' }}
-              onClick={() => setShowJSInput(!showJSInput)}
+              onClick={handleToggleJS}
             >
               JS Code
             </button>
@@ -309,8 +319,8 @@ export const SubmitPanel = ({ isOpen, onClose, editingRecipe }) => {
               />
               {jsInputError && <div style={{ color: '#ff4444', fontSize: '0.8rem', marginTop: '0.5rem' }}>{jsInputError}</div>}
               <div style={{ display: 'flex', gap: '0.5rem', marginTop: '0.5rem', justifyContent: 'flex-end' }}>
-                <button type="button" className="glass-btn" style={{ padding: '0.3rem 0.8rem', fontSize: '0.8rem' }} onClick={() => { setShowJSInput(false); setJsInputError(''); }}>Cancel</button>
-                <button type="button" className="glass-btn" style={{ padding: '0.3rem 0.8rem', fontSize: '0.8rem', borderColor: 'var(--glow-cyan)' }} onClick={handleJSSubmit}>Import</button>
+                <button type="button" className="glass-btn" style={{ padding: '0.3rem 0.8rem', fontSize: '0.8rem' }} onClick={() => { setShowJSInput(false); setJsInputError(''); }}>Close</button>
+                <button type="button" className="glass-btn" style={{ padding: '0.3rem 0.8rem', fontSize: '0.8rem', borderColor: 'var(--glow-cyan)' }} onClick={handleJSSubmit}>Save & Sync</button>
               </div>
             </div>
           )}
