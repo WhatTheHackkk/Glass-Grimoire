@@ -142,10 +142,10 @@ export const RecipeViewModal = ({ recipe, isOpen, onClose }) => {
           position: 'relative', display: 'flex', flexDirection: 'column'
         }}
       >
-        <div style={{ position: 'relative', height: '300px', width: '100%' }}>
+        <div className="no-print" style={{ position: 'relative', height: '300px', width: '100%' }}>
           <img src={recipe.coverImage} alt={recipe.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
           <button className="glass-btn no-print" onClick={onClose} style={{ position: 'absolute', top: '1rem', right: '1rem', padding: '0.5rem', background: 'rgba(0,0,0,0.5)' }}>
-            <X size={24} />
+            <X size={24} color="#ffffff" />
           </button>
         </div>
 
@@ -163,7 +163,7 @@ export const RecipeViewModal = ({ recipe, isOpen, onClose }) => {
             </div>
           </div>
 
-          <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', margin: '1rem 0' }}>
+          <div className="no-print" style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', margin: '1rem 0' }}>
             {recipe.tags && recipe.tags.map(tag => (
               <span key={tag} className="active-pill" style={{ padding: '0.2rem 0.6rem', fontSize: '0.8rem', borderRadius: '12px', border: '1px solid' }}>{tag}</span>
             ))}
@@ -196,7 +196,7 @@ export const RecipeViewModal = ({ recipe, isOpen, onClose }) => {
             {recipe.description}
           </p>
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '2rem' }}>
+          <div className="print-stack" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '2rem' }}>
             <div>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
                 <h3 style={{ fontFamily: 'var(--font-heading)', color: 'var(--glow-cyan)' }}>Ingredients</h3>
@@ -220,9 +220,9 @@ export const RecipeViewModal = ({ recipe, isOpen, onClose }) => {
               </div>
               <ul style={{ listStyle: 'none', padding: 0 }}>
                 {recipe.ingredients.map((ing, i) => (
-                  <li key={i} style={{ display: 'flex', justifyContent: 'space-between', padding: '0.8rem 0', borderBottom: '1px solid var(--glass-border)' }}>
-                    <span>{ing.name}</span>
-                    <span style={{ color: 'var(--glow-cyan)', fontWeight: 'bold' }}>{scaleQuantity(ing.qty)}</span>
+                  <li key={i} className="print-list-item" style={{ display: 'flex', justifyContent: 'space-between', padding: '0.8rem 0', borderBottom: '1px solid var(--glass-border)' }}>
+                    <span className="print-text">{ing.name}</span>
+                    <span className="print-text-bold" style={{ color: 'var(--glow-cyan)', fontWeight: 'bold' }}>{scaleQuantity(ing.qty)}</span>
                   </li>
                 ))}
               </ul>
@@ -245,6 +245,7 @@ export const RecipeViewModal = ({ recipe, isOpen, onClose }) => {
                   step.trim() && (
                     <div 
                       key={idx} 
+                      className="print-plain-text"
                       style={{ 
                         padding: '0.8rem', 
                         borderRadius: '8px', 

@@ -12,7 +12,10 @@ export const AppProvider = ({ children }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [activeCategory, setActiveCategory] = useState('All');
   const [groceryList, setGroceryList] = useState([]);
-  const [theme, setTheme] = useState('dark');
+  
+  const [theme, setTheme] = useState(() => {
+    return localStorage.getItem('glassGrimoire_theme') || 'dark';
+  });
 
   // Theme effect
   useEffect(() => {
@@ -21,6 +24,7 @@ export const AppProvider = ({ children }) => {
     } else {
       document.body.classList.remove('light-theme');
     }
+    localStorage.setItem('glassGrimoire_theme', theme);
   }, [theme]);
 
   const toggleTheme = () => setTheme(prev => prev === 'dark' ? 'light' : 'dark');
