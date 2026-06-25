@@ -17,6 +17,10 @@ export const SubmitPanel = ({ isOpen, onClose, editingRecipe }) => {
   const [pendingRecipe, setPendingRecipe] = useState(null);
   const [localEditingRecipe, setLocalEditingRecipe] = useState(null);
 
+  const [showJSInput, setShowJSInput] = useState(false);
+  const [jsInputValue, setJsInputValue] = useState('');
+  const [jsInputError, setJsInputError] = useState('');
+
   const prevIsOpen = useRef(isOpen);
   const prevEditingRecipe = useRef(editingRecipe);
 
@@ -95,6 +99,40 @@ export const SubmitPanel = ({ isOpen, onClose, editingRecipe }) => {
 
   const handleImageUpload = (e) => {
     processImageFile(e.target.files[0]);
+  };
+
+  const handleJSSubmit = () => {
+    try {
+      let parsed;
+      try {
+        parsed = JSON.parse(jsInputValue);
+      } catch(e) {
+        // Fallback for raw JS string formatting
+        // eslint-disable-next-line no-new-func
+        parsed = new Function('return ' + jsInputValue)();
+      }
+
+      if (!Array.isArray(parsed)) {
+        throw new Error('Input must be a JavaScript array.');
+      }
+
+      const newIngredients = parsed.map((item, idx) => {
+        if (!Array.isArray(item) || item.length < 2) {
+          throw new Error(`Item at index ${idx} is not a valid tuple [Name, Qty].`);
+        }
+        return { name: String(item[0]), qty: String(item[1]) };
+      });
+
+      // Filter out empty rows from current state, then append the new ones
+      const currentValid = ingredients.filter(i => i.name.trim() !== '' || i.qty.trim() !== '');
+      setIngredients(currentValid.length > 0 ? [...currentValid, ...newIngredients] : newIngredients);
+      
+      setShowJSInput(false);
+      setJsInputValue('');
+      setJsInputError('');
+    } catch (err) {
+      setJsInputError('Failed to parse: ' + err.message);
+    }
   };
 
   const handleSubmit = (e) => {
@@ -245,7 +283,38 @@ export const SubmitPanel = ({ isOpen, onClose, editingRecipe }) => {
         </div>
 
         <div className="form-group">
-          <label>Ingredients</label>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
+            <label style={{ marginBottom: 0 }}>Ingredients</label>
+            <button 
+              type="button" 
+              className="glass-btn" 
+              style={{ fontSize: '0.8rem', padding: '0.2rem 0.6rem', borderRadius: '15px' }}
+              onClick={() => setShowJSInput(!showJSInput)}
+            >
+              JS Code
+            </button>
+          </div>
+          
+          {showJSInput && (
+            <div style={{ background: 'rgba(0,0,0,0.2)', padding: '1rem', borderRadius: '8px', marginBottom: '1rem', border: '1px solid var(--glass-border)' }}>
+              <div style={{ fontSize: '0.9rem', marginBottom: '0.5rem', color: 'var(--text-secondary)' }}>
+                Paste a JS array of tuples: <code>[["Name", "Qty"], ...]</code>
+              </div>
+              <textarea 
+                className="glass-input" 
+                rows={4} 
+                value={jsInputValue}
+                onChange={e => { setJsInputValue(e.target.value); setJsInputError(''); }}
+                placeholder={'[\n  ["Fettuccine pasta", "200g"],\n  ["Fresh cream", "1 cup"]\n]'}
+              />
+              {jsInputError && <div style={{ color: '#ff4444', fontSize: '0.8rem', marginTop: '0.5rem' }}>{jsInputError}</div>}
+              <div style={{ display: 'flex', gap: '0.5rem', marginTop: '0.5rem', justifyContent: 'flex-end' }}>
+                <button type="button" className="glass-btn" style={{ padding: '0.3rem 0.8rem', fontSize: '0.8rem' }} onClick={() => { setShowJSInput(false); setJsInputError(''); }}>Cancel</button>
+                <button type="button" className="glass-btn" style={{ padding: '0.3rem 0.8rem', fontSize: '0.8rem', borderColor: 'var(--glow-cyan)' }} onClick={handleJSSubmit}>Import</button>
+              </div>
+            </div>
+          )}
+
           {ingredients.map((ing, idx) => (
             <div key={idx} style={{ display: 'flex', gap: '0.5rem', marginBottom: '0.5rem' }}>
               <input type="text" className="glass-input" placeholder="Name" value={ing.name} onChange={e => {
