@@ -7,7 +7,8 @@ import { AIChefPanel } from './components/AIChefPanel';
 import { LoginModal } from './components/LoginModal';
 import { RecipeViewModal } from './components/RecipeViewModal';
 import { GroceryPanel } from './components/GroceryPanel';
-import { Plus, Sparkles } from 'lucide-react';
+import { SettingsModal } from './components/SettingsModal';
+import { Plus, Sparkles, Settings } from 'lucide-react';
 
 const AppContent = () => {
   const { isAdmin } = useContext(AppContext);
@@ -15,6 +16,7 @@ const AppContent = () => {
   const [isPanelOpen, setIsPanelOpen] = useState(false);
   const [isAIChefOpen, setIsAIChefOpen] = useState(false);
   const [isGroceryOpen, setIsGroceryOpen] = useState(false);
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [editingRecipe, setEditingRecipe] = useState(null);
   const [viewedRecipe, setViewedRecipe] = useState(null);
 
@@ -76,7 +78,28 @@ const AppContent = () => {
       />
 
       {isAdmin && (
+        <SettingsModal
+          isOpen={isSettingsOpen}
+          onClose={() => setIsSettingsOpen(false)}
+        />
+      )}
+
+      {isAdmin && (
         <div className="no-print" style={{ position: 'fixed', bottom: '2rem', right: '2rem', display: 'flex', flexDirection: 'column', gap: '1rem', zIndex: 90 }}>
+          <button 
+            className="glass-btn"
+            onClick={() => setIsSettingsOpen(true)}
+            style={{
+              width: '60px', height: '60px', borderRadius: '50%',
+              display: 'flex', justifyContent: 'center', alignItems: 'center',
+              border: '1px solid var(--text-secondary)',
+              boxShadow: '0 0 15px rgba(0, 0, 0, 0.2)'
+            }}
+            title="Settings"
+          >
+            <Settings size={28} color="var(--text-secondary)" />
+          </button>
+
           <button 
             className="glass-btn"
             onClick={() => setIsAIChefOpen(true)}

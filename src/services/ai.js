@@ -1,7 +1,12 @@
-import { GoogleGenAI, Type } from '@google/genai';
+import { GoogleGenAI } from '@google/genai';
 
-const API_KEY = "AQ.Ab8RN6K6eSqxmEj_6Bs2AOkhEjVqbD3FnwQs6VbHwK-XcrDnxQ";
-const ai = new GoogleGenAI({ apiKey: API_KEY });
+const getAIClient = () => {
+  const apiKey = localStorage.getItem('glassGrimoire_geminiKey');
+  if (!apiKey || apiKey.trim() === '') {
+    throw new Error("Missing Gemini API Key. Please click the Settings gear icon (⚙️) to enter your own API key.");
+  }
+  return new GoogleGenAI({ apiKey: apiKey.trim() });
+};
 
 export const generateRecipeFromIngredients = async (ingredientsList) => {
   const prompt = `You are an expert chef. Create a creative, delicious recipe using primarily these ingredients: ${ingredientsList}. You can assume basic pantry staples (salt, oil, etc) are available. 
@@ -17,6 +22,7 @@ Return a JSON object matching this schema:
 }`;
 
   try {
+    const ai = getAIClient();
     const response = await ai.models.generateContent({
       model: 'gemini-2.5-flash',
       contents: prompt,
@@ -28,7 +34,7 @@ Return a JSON object matching this schema:
     return JSON.parse(response.text);
   } catch (err) {
     console.error("AI Generation Error:", err);
-    throw new Error("Failed to generate recipe.");
+    throw err;
   }
 };
 
@@ -45,6 +51,7 @@ Return a JSON object with this schema:
 }`;
 
   try {
+    const ai = getAIClient();
     const response = await ai.models.generateContent({
       model: 'gemini-2.5-flash',
       contents: prompt,
@@ -56,6 +63,6 @@ Return a JSON object with this schema:
     return JSON.parse(response.text);
   } catch (err) {
     console.error("AI Nutrition Error:", err);
-    throw new Error("Failed to estimate nutrition.");
+    throw err;
   }
 };
